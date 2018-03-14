@@ -18,6 +18,7 @@ public class HashTableLin {
         table = new Integer[size]; // allocate memory
     }
 
+
     // function generates the smallest prime number greater than the double n
     // otherwise, if it can't find any, returns 1
     private int closestPrime(double n){
@@ -37,5 +38,64 @@ public class HashTableLin {
         return true;
     }
 
+    // PUBLIC METHODS --------------------------------------------------------------------
 
+    // insert key if the key isn't already in there. if will be above load factor, rehash
+    public void insert(int n){
+        if (this.isIn(n)) // we can't add if it's in so print error message
+            System.out.println("we can't insert that element: it's already in the table");
+        else if (numkeys+1/size > maxloadfactor){ // we're too full so rehash the table
+            rehash(n);
+            return;
+        }
+        else{
+
+        }
+    }
+
+    // make new table at least 2* larger but also prime size & rehash w linear probing all prev keys
+    private void rehash(){
+
+    }
+
+    // return true if n is in the hash table, false otherwise
+    public boolean isIn(int n){
+
+    }
+
+    // print the keys of the hash table, order doesn't matter
+    public void printKeys)(){
+
+    }
+
+    // print all the keys in this hash table with their corresponding indexes
+    // in order of array indexes
+    public void printKeysAndIndexes(){
+
+    }
+
+    // PUBLIC ACCESSORS --------------------------------------------------------------------
+
+    public int getSize(){
+        return size;
+    }
+
+    public double getMaxLoadFactor(){
+        return maxloadfactor;
+    }
+
+    public int getNumKeys(){
+        return numkeys;
+    }
+
+
+    // insert and count probes needed to insert
+    public int insert(int n){
+        if (isIn(n))
+            return 0;
+        else {
+
+        }
+        return 0;
+    }
 }
