@@ -29,6 +29,7 @@ public class HashTableLin {
         return 1;
     }
 
+
     // checks if the integer passed is a prime number
     private boolean isPrime(int n){
         for (int i =1; i < n; i++){
@@ -45,11 +46,19 @@ public class HashTableLin {
         if (this.isIn(n)) // we can't add if it's in so print error message
             System.out.println("we can't insert that element: it's already in the table");
         else if (numkeys+1/size > maxloadfactor){ // we're too full so rehash the table
-            rehash(n);
+            rehash();
             return;
         }
-        else{
-
+        else if (table[n%size] == null ){ // spot is empty, so insert
+            table[n%size] = n;
+            numkeys++;
+        }
+        else{ // spot isn't empty, so have to linearly probe
+            int i = 1; // start one away
+            while (table[(n+i)%size] != null){ // keep incrementing if we're not at an empty spot
+                i++;
+            }
+            table[(n+i)%size] = n; // we've found empty spot so insert it
         }
     }
 
@@ -90,7 +99,7 @@ public class HashTableLin {
 
 
     // insert and count probes needed to insert
-    public int insert(int n){
+    public int insertandcount(int n){
         if (isIn(n))
             return 0;
         else {
