@@ -64,12 +64,40 @@ public class HashTableLin {
 
     // make new table at least 2* larger but also prime size & rehash w linear probing all prev keys
     private void rehash(){
+        // set dimensions of new table
+        int newsize = closestPrime(size*2);
+        int newmax = (int)this.getMaxLoadFactor()*newsize;
 
+        // new maxnum keys is new size * load factor, so pass these to new table
+        HashTableLin temptable = new HashTableLin(newmax, this.getMaxLoadFactor());
+
+        // loop through old table and insert all of them into the new table
+        for(int i = 0; i < this.getSize(); i++) {
+            temptable.insert(this.table[i]);
+        }
+
+        // now that we've added everything, make sure to set new table as the old table stuff
+        // change all the instance fields except maxloadfactor, and then we're done rehashing!
+        this.maxloadfactor = newmax;
+        this.table = temptable.table;
+        this.size = newsize;
     }
 
     // return true if n is in the hash table, false otherwise
     public boolean isIn(int n){
-
+        if(table[n%size] == null)
+            return false;
+        else { // spot has something in it so check linearly
+            if(table[n%size] == n ) // has the element n in it
+                return true;
+            else{ // have to check linear probing, check through entire table so n spots - 1
+                for (int i = 1; i < size; i++){
+                    if (table[(n+i)%size] == n)
+                        return true;
+                }
+            }
+            return false; // if we looped through then we didn't find it so return false
+        }
     }
 
     // print the keys of the hash table, order doesn't matter
