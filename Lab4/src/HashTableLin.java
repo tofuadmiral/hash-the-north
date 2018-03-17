@@ -114,7 +114,7 @@ public class HashTableLin {
     public void printKeysAndIndexes(){
         for (int i = 0; i< size; i++){
             if (table[i] != null)
-                System.out.println("Index: " + i + ", Key: " table[i]+",");
+                System.out.println("Index: " + i + ", Key: " + table[i]+",");
         }
     }
 
@@ -158,4 +158,6 @@ public class HashTableLin {
             return i + 1; // bc even if zero still one probe
         }
     }
-}
+
+
+} // end class
