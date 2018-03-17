@@ -59,6 +59,7 @@ public class HashTableLin {
                 i++;
             }
             table[(n+i)%size] = n; // we've found empty spot so insert it
+            numkeys++; // increment number of keys bc we increased them
         }
     }
 
@@ -101,14 +102,20 @@ public class HashTableLin {
     }
 
     // print the keys of the hash table, order doesn't matter
-    public void printKeys)(){
-
+    public void printKeys(){
+        for (int i = 0; i< size; i++){
+            if (table[i] != null)
+                System.out.println(table[i]+", ");
+        }
     }
 
     // print all the keys in this hash table with their corresponding indexes
     // in order of array indexes
     public void printKeysAndIndexes(){
-
+        for (int i = 0; i< size; i++){
+            if (table[i] != null)
+                System.out.println("Index: " + i + ", Key: " table[i]+",");
+        }
     }
 
     // PUBLIC ACCESSORS --------------------------------------------------------------------
@@ -128,11 +135,27 @@ public class HashTableLin {
 
     // insert and count probes needed to insert
     public int insertandcount(int n){
-        if (isIn(n))
+        if (this.isIn(n)) { // we can't add if it's in so print error message
+            System.out.println("we can't insert that element: it's already in the table");
             return 0;
-        else {
-
         }
-        return 0;
+        else if(numkeys+1/size > maxloadfactor){ // we're too full so rehash the table
+            rehash();
+            return 0;
+        }
+        else if (table[n%size] == null ){ // spot is empty, so insert
+            table[n%size] = n;
+            numkeys++;
+            return 1; // had to check one spot so took one probe
+        }
+        else{ // spot isn't empty, so have to linearly probe
+            int i = 1; // start one away
+            while (table[(n+i)%size] != null){ // keep incrementing if we're not at an empty spot
+                i++;
+            }
+            table[(n+i)%size] = n; // we've found empty spot so insert it
+            numkeys++;
+            return i + 1; // bc even if zero still one probe
+        }
     }
 }
