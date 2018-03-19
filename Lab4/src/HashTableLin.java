@@ -6,6 +6,7 @@ public class HashTableLin {
     private int size;
     private int numkeys;
     private double maxloadfactor;
+    private int duplicates;
 
     // CONSTRUCTORS --------------------------------------------------------------------
 
@@ -45,6 +46,7 @@ public class HashTableLin {
     public void insert(int n){
         if (this.isIn(n)) { // we can't add if it's in so print error message
             System.out.println("we can't insert element: " + n + " it's already in the table");
+            duplicates++;
             return;
         }
         if ((double)(numkeys+1)/size > maxloadfactor) {
@@ -141,11 +143,29 @@ public class HashTableLin {
         return numkeys;
     }
 
+    public int getDuplicates(){
+        return duplicates;
+    }
+
+    // searching function to figure out how long it takes to find an element
+    public int search(int n) {
+        int numprobes = 1;
+        int index = n % size;
+        while (table[index] != null) {
+            if (table[index] == n)
+                return 0;
+            index = (index+1)%size;
+            numprobes++;
+        }
+        return numprobes;
+    }
+
 
     // insert and count probes needed to insert
     public int insertandcount(int n){
         if (this.isIn(n)) { // we can't add if it's in so print error message
             System.out.println("we can't insert element: " + n + " it's already in the table");
+            this.duplicates++;
             return 0;
         }
         if ((double)(numkeys+1)/size > maxloadfactor) {
