@@ -6,8 +6,34 @@ public class TestHashTable {
         System.out.println("Test 1: create hash table");
         HashTableLin test1 = new HashTableLin(20, 0.5);
         test1.printKeysAndIndexes();
+        System.out.println("Size: "+test1.getSize()+", num keys "+test1.getNumKeys()+", " + "maxloadfactor: "+test1.getMaxLoadFactor());
 
         // test 2: insert a few elements into the table
-        test1.insert();
+        System.out.println("\nTest 2: insert some items into the table:");
+        test1.insert(3); // should be at index 3
+        test1.insert(29); // index 29
+        test1.insert(59); // index 18
+        test1.printKeysAndIndexes();
+        System.out.println("Size: "+test1.getSize()+", num keys "+test1.getNumKeys()+", " + "maxloadfactor: "+test1.getMaxLoadFactor());
+
+        // test 3: linear probing
+        System.out.println("\nTest 3: try linear probing of the table:");
+        test1.insert(18); // should go to 19
+        test1.printKeysAndIndexes();
+        System.out.println("Size: "+test1.getSize()+", num keys "+test1.getNumKeys()+", " + "maxloadfactor: "+test1.getMaxLoadFactor());
+
+        // test 4: insert something already in there
+        System.out.println("\nTest 4: insert a repeat:");
+        test1.insert(18);
+        System.out.println("Size: "+test1.getSize()+", num keys "+test1.getNumKeys()+", " + "maxloadfactor: "+test1.getMaxLoadFactor());
+
+        // test 5: insert until we have to rehash
+        System.out.println("\nTest 5: insert till rehash needed:");
+        for (int i = 0; i < 20; i++){
+            test1.insert(i);
+        }
+        test1.printKeysAndIndexes();
+        System.out.println("Size: "+test1.getSize()+", num keys "+test1.getNumKeys()+", " + "maxloadfactor: "+test1.getMaxLoadFactor());
+
     }
 }

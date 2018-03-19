@@ -16,23 +16,23 @@ public class HashTableLin {
         maxloadfactor = load;
         size = closestPrime((double)maxNum/load); // rearrange load formula
         table = new Integer[size]; // allocate memory
+        numkeys = 0; // initialize number of keys
     }
 
 
     // function generates the smallest prime number greater than the double n
     // otherwise, if it can't find any, returns 1
     private int closestPrime(double n){
-        for (int i = 0; i < n+100; i++){
+        for (int i = (int)n; i < n+1000; i++){
             if (isPrime(i) && i>n)
                 return i;
         }
         return 1;
     }
 
-
     // checks if the integer passed is a prime number
     private boolean isPrime(int n){
-        for (int i =1; i < n; i++){
+        for (int i=2; i < n; i++){
             if (n%i == 0)
                 return false;
         }
@@ -43,15 +43,18 @@ public class HashTableLin {
 
     // insert key if the key isn't already in there. if will be above load factor, rehash
     public void insert(int n){
-        if (this.isIn(n)) // we can't add if it's in so print error message
-            System.out.println("we can't insert that element: it's already in the table");
-        else if (numkeys+1/size > maxloadfactor){ // we're too full so rehash the table
+        if (this.isIn(n)) { // we can't add if it's in so print error message
+            System.out.println("we can't insert element: " + n + " it's already in the table");
+            return;
+        }
+        if ((double)(numkeys+1)/size > maxloadfactor) {
             rehash();
             return;
         }
-        else if (table[n%size] == null ){ // spot is empty, so insert
+        if (table[n%size] == null ){ // spot is empty, so insert
             table[n%size] = n;
             numkeys++;
+            return;
         }
         else{ // spot isn't empty, so have to linearly probe
             int i = 1; // start one away
@@ -60,26 +63,29 @@ public class HashTableLin {
             }
             table[(n+i)%size] = n; // we've found empty spot so insert it
             numkeys++; // increment number of keys bc we increased them
+            return;
         }
     }
 
     // make new table at least 2* larger but also prime size & rehash w linear probing all prev keys
     private void rehash(){
         // set dimensions of new table
-        int newsize = closestPrime(size*2);
-        int newmax = (int)this.getMaxLoadFactor()*newsize;
+        int newsize = closestPrime((double)this.size*2);
+        int newmax = (int)(this.getMaxLoadFactor()*(double)newsize);
 
-        // new maxnum keys is new size * load factor, so pass these to new table
+        // newmax num of keys is new size * load factor, so pass these to new table
         HashTableLin temptable = new HashTableLin(newmax, this.getMaxLoadFactor());
 
         // loop through old table and insert all of them into the new table
         for(int i = 0; i < this.getSize(); i++) {
-            temptable.insert(this.table[i]);
+            if (this.table[i] != null){ // only insert if not null
+                temptable.insert(this.table[i]);
+            }
         }
 
         // now that we've added everything, make sure to set new table as the old table stuff
         // change all the instance fields except maxloadfactor, and then we're done rehashing!
-        this.maxloadfactor = newmax;
+        this.maxloadfactor = this.getMaxLoadFactor();
         this.table = temptable.table;
         this.size = newsize;
     }
@@ -93,11 +99,14 @@ public class HashTableLin {
                 return true;
             else{ // have to check linear probing, check through entire table so n spots - 1
                 for (int i = 1; i < size; i++){
-                    if (table[(n+i)%size] == n)
+                    if (table[(n+i)%size] == null)
+                        return false;
+                    else if (table[(n+i)%size] == n){
                         return true;
+                    }
                 }
             }
-            return false; // if we looped through then we didn't find it so return false
+            return false; // if we looped through then we didn't find it, return false
         }
     }
 
