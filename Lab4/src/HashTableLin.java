@@ -145,17 +145,16 @@ public class HashTableLin {
     // insert and count probes needed to insert
     public int insertandcount(int n){
         if (this.isIn(n)) { // we can't add if it's in so print error message
-            System.out.println("we can't insert that element: it's already in the table");
+            System.out.println("we can't insert element: " + n + " it's already in the table");
             return 0;
         }
-        else if(numkeys+1/size > maxloadfactor){ // we're too full so rehash the table
+        if ((double)(numkeys+1)/size > maxloadfactor) {
             rehash();
-            return 0;
         }
-        else if (table[n%size] == null ){ // spot is empty, so insert
+        if (table[n%size] == null ){ // spot is empty, so insert
             table[n%size] = n;
             numkeys++;
-            return 1; // had to check one spot so took one probe
+            return 1;
         }
         else{ // spot isn't empty, so have to linearly probe
             int i = 1; // start one away
@@ -163,8 +162,8 @@ public class HashTableLin {
                 i++;
             }
             table[(n+i)%size] = n; // we've found empty spot so insert it
-            numkeys++;
-            return i + 1; // bc even if zero still one probe
+            numkeys++; // increment number of keys bc we increased them
+            return i+1; // return number of additional probes + the first one to look
         }
     }
 

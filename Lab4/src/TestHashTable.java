@@ -1,4 +1,6 @@
 import static java.lang.System.out;
+import java.util.Random;
+
 public class TestHashTable {
     public static void main(String[] args) {
 
@@ -34,6 +36,22 @@ public class TestHashTable {
         }
         test1.printKeysAndIndexes();
         System.out.println("Size: "+test1.getSize()+", num keys "+test1.getNumKeys()+", " + "maxloadfactor: "+test1.getMaxLoadFactor());
+
+        // test 6: try insert and count
+        System.out.println("\nTest 6: try insert and count, 1 probe: ");
+        System.out.println("Probes taken: "+ test1.insertandcount(50));
+        test1.printKeysAndIndexes();
+        System.out.println("Size: "+test1.getSize()+", num keys "+test1.getNumKeys()+", " + "maxloadfactor: "+test1.getMaxLoadFactor());
+
+        // test 7: try insert and count
+        System.out.println("\nTest 6: try insert and count, 2 probes: ");
+        System.out.println("Probes taken: "+ test1.insertandcount(166));
+        test1.printKeysAndIndexes();
+        System.out.println("Size: "+test1.getSize()+", num keys "+test1.getNumKeys()+", " + "maxloadfactor: "+test1.getMaxLoadFactor());
+
+        // test 8: get average probes for successful search
+        HashTableLin testpoint1 = new HashTableLin(100000, 0.1);
+
 
     }
 }
